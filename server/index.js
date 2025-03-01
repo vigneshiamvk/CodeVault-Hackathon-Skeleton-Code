@@ -1,7 +1,6 @@
 const express = require('express');
 const axios = require('axios');
-const catalyst = require('zcatalyst-sdk-node');
-
+///// Insert catalyst sdk
 const app = express();
 app.use(express.json());
 
@@ -73,3 +72,115 @@ Keep the response concise (within 250 words) but technically detailed. This resp
   }
 };
 
+//Initialize Catalyst and return common resources
+/////////////
+////////////
+////////////
+
+// POST /analyze - Analyze GitHub issues and generate AI suggestions
+app.post('/analyze', async (req, res) => {
+  const { url } = req.body;
+  if (!url) {
+    return res.status(400).json({ error: 'URL is required in the request body' });
+  }
+
+  const repoInfo = extractRepoInfo(url);
+  if (!repoInfo) {
+    return res.status(400).json({ error: 'Invalid GitHub URL' });
+  }
+
+  try {
+    // Fetch repository data and issues concurrently
+    const [repoResponse, issuesResponse] = await Promise.all([
+      githubApi.get(`/repos/${repoInfo.owner}/${repoInfo.repo}`),
+      githubApi.get(`/repos/${repoInfo.owner}/${repoInfo.repo}/issues?state=all&per_page=2`),
+    ]);
+
+    // Get language statistics
+    const languagesResponse = await githubApi.get(repoResponse.data.languages_url);
+
+    const repoData = repoResponse.data;
+    const issues = issuesResponse.data;
+    const languages = languagesResponse.data;
+
+    // Generate AI debug suggestions for each issue
+    for (const issue of issues) {
+      try {
+        issue.ai_suggestion = await generateDebugSuggestion(issue, repoData, languages);
+      } catch (aiError) {
+        console.error(`Error generating suggestion for issue #${issue.number}:`, aiError);
+        issue.ai_suggestion = 'Error generating AI suggestion. Please try again later.';
+      }
+    }
+
+    res.json({ repoData, languages, issues });
+  } catch (err) {
+    console.error('Error fetching repository data:', err);
+    const status = err.response?.status;
+    if (status === 403) {
+      return res.status(403).json({ error: 'GitHub API rate limit exceeded. Please check your token.' });
+    } else if (status === 404) {
+      return res.status(404).json({ error: 'Repository not found. Please check the URL.' });
+    }
+    res.status(500).json({ error: 'Error fetching repository data' });
+  }
+});
+
+// GET /getissues - Retrieve issues from the Catalyst Data Store
+app.get('/getissues', async (req, res) => {
+  try {
+    // Initialize ZCQL, fetch data from Issue Table
+    /////////////
+    ////////////
+    res.status(200).json(issues);
+  } catch (error) {
+    console.error('Error fetching issues from Catalyst:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// POST /saveIssue - Save a new issue to the Catalyst Data Store
+app.post('/saveIssue', async (req, res) => {
+  try {
+    // Initialize datastore, fetch data from Issue Table
+    /////////
+    /////////
+    ////////
+    res.status(201).json({ success: true, data: insertedRow });
+  } catch (error) {
+    console.error('Error saving issue to Catalyst:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// DELETE /removeissue/:id - Remove a single issue by its ROWID
+app.delete('/removeissue/:id', async (req, res) => {
+  try {
+    // Initialize datastore, remove data from Issue Table
+    //////////
+    /////////
+    ////////
+    res.status(200).json({ success: true, message: `Issue with ROWID ${rowId} removed successfully.` });
+  } catch (error) {
+    console.error('Error removing issue from Catalyst:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+
+});
+
+// DELETE /clearissues - Clear all issues from the Catalyst Data Store
+app.delete('/clearissues', async (req, res) => {
+  try {
+    // Initialize data store, remove all data from the table
+    //////////////
+    //////////////
+    /////////////
+    res.status(200).json({ success: true, message: 'All issues cleared successfully.' });
+  } catch (error) {
+    console.error('Error clearing issues from Catalyst:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+
+});
+
+module.exports = app;
