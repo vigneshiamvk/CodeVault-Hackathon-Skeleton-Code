@@ -1,6 +1,5 @@
 const express = require('express');
 const axios = require('axios');
-const OpenAI = require('openai');
 const catalyst = require('zcatalyst-sdk-node');
 
 const app = express();
