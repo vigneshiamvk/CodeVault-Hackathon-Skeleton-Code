@@ -1,0 +1,117 @@
+/* Custom styles to complement Bootstrap */
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-3 {
+  gap: 1rem;
+}
+
+.gap-4 {
+  gap: 1.5rem;
+}
+
+/* Language and topic badges */
+.badge-language {
+  background-color: #e3f2fd;
+  color: #0d6efd;
+  font-size: 0.875rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+}
+
+.badge-topic {
+  background-color: #f8f9fa;
+  color: #495057;
+  font-size: 0.875rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+}
+
+/* Issue card styles */
+.issue-card {
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 1.5rem;
+}
+
+.issue-card:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.issue-analysis {
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-left: 2rem;
+  margin-top: 1rem;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner-border {
+  animation: spin 1s linear infinite;
+}
+
+/* Hover effects */
+.btn-primary:hover {
+  transform: translateY(-1px);
+  transition: transform 0.2s;
+}
+
+/* Custom scrollbar for better UX */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Tab styling */
+.nav-tabs .nav-link {
+  color: #495057;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-tabs .nav-link.active {
+  color: #0d6efd;
+  border-bottom: 2px solid #0d6efd;
+}
+
+/* Badge styling */
+.badge {
+  font-weight: 500;
+}
+
+/* Save/Remove button transitions */
+.save-issue-btn, .remove-issue-btn {
+  transition: all 0.2s ease;
+}
+
+.save-issue-btn:hover, .remove-issue-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Empty state styling */
+#noSavedIssues {
+  color: #6c757d;
+}
+
+/* Suggestion content styling */
+.suggestion-content {
+  white-space: pre-line;
+  line-height: 1.5;
+}
