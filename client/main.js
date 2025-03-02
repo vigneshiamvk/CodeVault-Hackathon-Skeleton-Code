@@ -46,7 +46,7 @@ const ui = {
         });
     },
 
-    updateRepoInfo(data) {
+    updateRepoInfo(data, languages) {
         document.getElementById('ownerAvatar').src = data.owner.avatar_url;
         document.getElementById('repoName').textContent = data.name;
         document.getElementById('ownerName').textContent = `by ${data.owner.login}`;
@@ -65,7 +65,7 @@ const ui = {
 
         // Update languages
         const languagesContainer = document.getElementById('languages');
-        languagesContainer.innerHTML = Object.keys(data.languages || {}).map(lang =>
+        languagesContainer.innerHTML = Object.keys(languages || {}).map(lang =>
             `<span class="badge-language">${lang}</span>`
         ).join('');
 
@@ -362,7 +362,7 @@ async function analyzeRepo() {
 
         ui.hideLoading();
         ui.showRepoInfo();
-        ui.updateRepoInfo(data.repoData);
+        ui.updateRepoInfo(data.repoData, data.languages);
         ui.updateIssues(data.issues, data.name);
     } catch (error) {
         ui.hideLoading();
