@@ -63,12 +63,11 @@ const { table } = getCatalystResources(req);
     const { title, html_url, created_at, ai_suggestion, saved_at } = req.body;
 
     const rowData = {
-      id,
       title,
       html_url,
       created_at,
       ai_suggestion,
-      saved_at,
+      saved_at
     };
 
     const insertedRow = await table.insertRow(rowData);
